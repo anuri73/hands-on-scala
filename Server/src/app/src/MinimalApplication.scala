@@ -1,37 +1,58 @@
 package app
 
 import scalatags.Text.all._
+import scalatags.generic
+import scalatags.text.Builder
 
 object MinimalApplication extends cask.MainRoutes {
     val bootstrap = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.css"
 
-    var messages: Seq[(String, String)] = Vector(("alice", "Hello World!"), ("bob", "I am cow, hear me moo"))
+    @cask.staticResources("/static")
+    def staticResources() = "static"
+
+    var messages: Seq[(String, String)] = Vector(
+        ("alice", "Hello World!"),
+        ("bob", "I am cow, hear me moo"),
+        ("urmat", "Test row")
+    )
 
     @cask.get("/")
     def hello(): doctype = doctype("html")(
         html(
             head(
-                link(rel := "stylesheet", href := bootstrap)
+                link(rel := "stylesheet", href := bootstrap),
+                script(src := "/static/app.js")
             ),
             body(
                 div(cls := "container")(
                     h1("Scala chat!"),
                     div(
-                        for ((name, msg) <- messages) yield p(b(name), " ", msg)
+                        div(id := "messageList")(messageList()),
                     ),
-                    div(
-                        input(`type` := "text", placeholder := "User name"),
-                        input(`type` := "text", placeholder := "Write message!"),
+                    div(id := "errorDiv", color.red),
+                    form(onsubmit := "submitForm(); return false;", method := "post")(
+                        input(`type` := "text", id := "nameInput", placeholder := "User name"),
+                        input(`type` := "text", id := "msgInput", placeholder := "Write message!"),
+                        input(`type` := "submit")
                     )
                 )
             )
         )
     )
 
-    @cask.post("/do-thing")
-    def doThing(request: cask.Request): String = {
-        request.text().reverse
+    @cask.postJson("/")
+    def postChatMsg(name: String, msg: String): ujson.Obj = {
+        if (name == "") {
+            ujson.Obj("success" -> false, "err" -> "Name can not be empty")
+        } else if (msg == "")
+            ujson.Obj("success" -> false, "err" -> "Message can not be empty")
+        else {
+            messages = messages :+ (name -> msg)
+            ujson.Obj("success" -> true, "txt" -> messageList().render, "err" -> "")
+        }
     }
+
+    def messageList(): generic.Frag[Builder, String] = frag(for ((name, message) <- messages) yield p(b(name), " ", message))
 
     initialize()
 }
