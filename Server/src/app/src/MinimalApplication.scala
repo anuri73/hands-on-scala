@@ -10,11 +10,20 @@ object MinimalApplication extends cask.MainRoutes {
     @cask.staticResources("/static")
     def staticResources() = "static"
 
+    var openConnection = Set.empty[cask.WsChannelActor]
+
     var messages: Seq[(String, String)] = Vector(
         ("alice", "Hello World!"),
         ("bob", "I am cow, hear me moo"),
         ("urmat", "Test row")
     )
+
+    @cask.websocket("/subscribe")
+    def subscribe() = cask.WsHandler { connection =>
+        connection.send(cask.Ws.Text(messageList().render))
+        openConnection += connection
+        cask.WsActor { case cask.Ws.Close(_, _) => openConnection -= connection }
+    }
 
     @cask.get("/")
     def hello(): doctype = doctype("html")(
@@ -48,7 +57,8 @@ object MinimalApplication extends cask.MainRoutes {
             ujson.Obj("success" -> false, "err" -> "Message can not be empty")
         else {
             messages = messages :+ (name -> msg)
-            ujson.Obj("success" -> true, "txt" -> messageList().render, "err" -> "")
+            for (connection <- openConnection) connection.send(cask.Ws.Text(messageList().render))
+            ujson.Obj("success" -> true, "err" -> "")
         }
     }
 
