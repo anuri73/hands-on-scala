@@ -12,11 +12,31 @@ object MinimalApplication extends cask.MainRoutes {
 
     var openConnection = Set.empty[cask.WsChannelActor]
 
-    var messages: Seq[(String, String)] = Vector(
-        ("alice", "Hello World!"),
-        ("bob", "I am cow, hear me moo"),
-        ("urmat", "Test row")
-    )
+    case class Message(name: String, message: String)
+
+    import com.opentable.db.postgres.embedded.EmbeddedPostgres
+
+    val server: EmbeddedPostgres = EmbeddedPostgres.builder()
+        .setDataDirectory((os.pwd / "data").toString())
+        .setCleanDataDirectory(false)
+        .setPort(5432)
+        .start()
+
+    import io.getquill._
+    import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
+
+    val pgDataSource = new org.postgresql.ds.PGSimpleDataSource()
+    pgDataSource.setUser("postgres")
+
+    val hikariConfig: HikariConfig = new HikariConfig()
+    hikariConfig.setDataSource(pgDataSource)
+
+    val ctx = new PostgresJdbcContext(LowerCase, new HikariDataSource(hikariConfig))
+    ctx.executeAction("CREATE TABLE IF NOT EXISTS message (name text, message text);")
+
+    import ctx._
+
+    def messages: List[(String, String)] = ctx.run(query[Message].map(m => (m.name, m.message)))
 
     @cask.websocket("/subscribe")
     def subscribe() = cask.WsHandler { connection =>
@@ -50,19 +70,20 @@ object MinimalApplication extends cask.MainRoutes {
     )
 
     @cask.postJson("/")
-    def postChatMsg(name: String, msg: String): ujson.Obj = {
+    def postChatMsg(name: String, message: String): ujson.Obj = {
         if (name == "") {
             ujson.Obj("success" -> false, "err" -> "Name can not be empty")
-        } else if (msg == "")
+        } else if (message == "")
             ujson.Obj("success" -> false, "err" -> "Message can not be empty")
         else {
-            messages = messages :+ (name -> msg)
+            ctx.run(query[Message].insert(lift(Message(name, message))))
             for (connection <- openConnection) connection.send(cask.Ws.Text(messageList().render))
             ujson.Obj("success" -> true, "err" -> "")
         }
     }
 
-    def messageList(): generic.Frag[Builder, String] = frag(for ((name, message) <- messages) yield p(b(name), " ", message))
+
+    def messageList(): generic.Frag[Builder, String] = frag(for ((name, msg) <- messages) yield p(b(name), " ", msg))
 
     initialize()
 }

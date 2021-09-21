@@ -11,22 +11,42 @@
         <orderEntry type="inheritedJdk"/>
         <orderEntry type="sourceFolder" forTests="false"/>
         <orderEntry type="library" name="scala-sdk-2.13.2" level="application"/>
+        <orderEntry type="library" name="HikariCP-3.4.5.jar" level="project"/>
         <orderEntry type="library" name="Java-WebSocket-1.4.0.jar" level="project"/>
         <orderEntry type="library" name="cask-util_2.13-0.7.4.jar" level="project"/>
         <orderEntry type="library" name="cask_2.13-0.7.4.jar" level="project"/>
         <orderEntry type="library" name="castor_2.13-0.1.7.jar" level="project"/>
+        <orderEntry type="library" name="commons-codec-1.11.jar" level="project"/>
+        <orderEntry type="library" name="commons-compress-1.18.jar" level="project"/>
+        <orderEntry type="library" name="commons-io-2.6.jar" level="project"/>
+        <orderEntry type="library" name="commons-lang3-3.7.jar" level="project"/>
+        <orderEntry type="library" name="config-1.4.0.jar" level="project"/>
         <orderEntry type="library" name="fansi_2.13-0.2.9.jar" level="project"/>
-        <orderEntry type="library" name="geny_2.13-0.6.2.jar" level="project"/>
+        <orderEntry type="library" name="geny_2.13-0.6.10.jar" level="project"/>
         <orderEntry type="library" name="jboss-logging-3.3.2.Final.jar" level="project"/>
+        <orderEntry type="library" name="jcl-over-slf4j-1.7.25.jar" level="project"/>
+        <orderEntry type="library" name="jsr305-3.0.2.jar" level="project"/>
+        <orderEntry type="library" name="os-lib_2.13-0.7.8.jar" level="project"/>
+        <orderEntry type="library" name="otj-pg-embedded-0.13.1.jar" level="project"/>
         <orderEntry type="library" name="portable-scala-reflect_2.13-0.1.1.jar" level="project"/>
+        <orderEntry type="library" name="postgresql-42.2.8.jar" level="project"/>
         <orderEntry type="library" name="pprint_2.13-0.5.9.jar" level="project"/>
+        <orderEntry type="library" name="quill-core-portable_2.13-3.5.2.jar" level="project"/>
+        <orderEntry type="library" name="quill-core_2.13-3.5.2.jar" level="project"/>
+        <orderEntry type="library" name="quill-jdbc_2.13-3.5.2.jar" level="project"/>
+        <orderEntry type="library" name="quill-sql-portable_2.13-3.5.2.jar" level="project"/>
+        <orderEntry type="library" name="quill-sql_2.13-3.5.2.jar" level="project"/>
         <orderEntry type="library" name="requests_2.13-0.6.5.jar" level="project"/>
-        <orderEntry type="library" name="scala-collection-compat_2.13-2.1.4.jar" level="project"/>
+        <orderEntry type="library" name="scala-collection-compat_2.13-2.1.6.jar" level="project"/>
         <orderEntry type="library" name="scala-library-2.13.2.jar" level="project"/>
+        <orderEntry type="library" name="scala-logging_2.13-3.9.2.jar" level="project"/>
         <orderEntry type="library" name="scala-reflect-2.13.2.jar" level="project"/>
+        <orderEntry type="library" name="scala-sql-formatter_2.13-1.0.1.jar" level="project"/>
         <orderEntry type="library" name="scalatags_2.13-0.9.1.jar" level="project"/>
-        <orderEntry type="library" name="slf4j-api-1.7.25.jar" level="project"/>
+        <orderEntry type="library" name="slf4j-api-1.7.26.jar" level="project"/>
         <orderEntry type="library" name="sourcecode_2.13-0.2.1.jar" level="project"/>
+        <orderEntry type="library" name="spotbugs-annotations-3.1.7.jar" level="project"/>
+        <orderEntry type="library" name="sql-formatter-1.0.jar" level="project"/>
         <orderEntry type="library" name="test-interface-1.0.jar" level="project"/>
         <orderEntry type="library" name="ujson_2.13-1.2.0.jar" level="project"/>
         <orderEntry type="library" name="undertow-core-2.0.13.Final.jar" level="project"/>
@@ -37,6 +57,7 @@
         <orderEntry type="library" name="utest_2.13-0.7.4.jar" level="project"/>
         <orderEntry type="library" name="xnio-api-3.3.8.Final.jar" level="project"/>
         <orderEntry type="library" name="xnio-nio-3.3.8.Final.jar" level="project"/>
+        <orderEntry type="library" name="xz-1.5.jar" level="project"/>
         <orderEntry type="module" module-name="app" exported=""/>
     </component>
 </module>

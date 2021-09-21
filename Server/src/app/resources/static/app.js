@@ -1,5 +1,5 @@
 function submitForm() {
-  fetch( "/", {method: "POST", body: JSON.stringify({name: nameInput.value, msg: msgInput.value})})
+  fetch( "/", {method: "POST", body: JSON.stringify({name: nameInput.value, message: msgInput.value})})
     .then(response => response.json())
     .then(json => {
         if (json["success"])  msgInput.value = ""
